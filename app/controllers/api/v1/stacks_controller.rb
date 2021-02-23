@@ -1,8 +1,10 @@
 module Api
   module V1
     class StacksController < ApplicationController
+      FETCH_LIMIT = 25
+
       def index
-        stacks = Stack.all
+        stacks = Stack.limit(limit).offset(params[:offset])
         render json: StacksRepresenter.new(stacks).as_json
       end 
 
@@ -23,6 +25,13 @@ module Api
       end
 
       private
+
+      def limit
+        [
+          params.fetch(:limit, FETCH_LIMIT).to_i, 
+          FETCH_LIMIT
+        ].min
+      end
 
       def stack_params
         params.require(:stack).permit(:title, :tags)

@@ -14,6 +14,22 @@ describe 'Stack API', type: :request do
       expect(response).to have_http_status(:success)
       expect(response_body.size).to eq(2)
     end
+
+    it 'returns a subset of books based on limit' do
+      get '/api/v1/stacks', params: { limit: 1 }
+      expect(response_body.size).to eq(1)
+    end
+
+    it 'returns a subset of books based on limit and offset' do
+      get '/api/v1/stacks', params: { limit: 1, offset: 1 }
+      expect(response_body.size).to eq(1)
+    end
+
+    it 'has a max limit of 25' do      
+      expect(Stack).to receive(:limit).with(25).and_call_original
+
+      get '/api/v1/stacks', params: { limit: 100 }      
+    end
   end
 
   describe 'POST /stacks' do
