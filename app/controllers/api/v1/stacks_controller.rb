@@ -2,14 +2,15 @@ module Api
   module V1
     class StacksController < ApplicationController
       def index
-        render json: Stack.all 
-      end
+        stacks = Stack.all
+        render json: StacksRepresenter.new(stacks).as_json
+      end 
 
       def create
         stack = Stack.new(stack_params)
 
         if stack.save
-          render json: stack, status: :created
+          render json: StackRepresenter.new(stack).as_json, status: :created
         else
           render json: stack.errors, status: :unprocessable_entity
         end

@@ -6,22 +6,22 @@ describe 'Stack API', type: :request do
       FactoryBot.create(:stack, title: 'Learn C++', tags: 'Code C++')
       FactoryBot.create(:stack, title: 'Learn Ruby', tags: 'Code Ruby')
     end
-    
+
     it 'returns all stacks' do
 
       get '/api/v1/stacks'
 
       expect(response).to have_http_status(:success)
-      expect(JSON.parse(response.body).size).to eq(2)
+      expect(response_body.size).to eq(2)
     end
   end
 
   describe 'POST /stacks' do
     it 'creates a new stack' do
       expect {
-        post '/api/v1/stacks', params: { stack: {title: 'Learn Lavarel', tags: 'Code Lavarel'} }
+          post '/api/v1/stacks', params: { stack: { title: 'Learn Lavarel', tags: 'Code Lavarel', links: [] } }        
       }.to change { Stack.count }.from(0).to(1)
-      expect(response).to have_http_status(:created)
+      expect(response).to have_http_status(:created)     
     end
   end
 
