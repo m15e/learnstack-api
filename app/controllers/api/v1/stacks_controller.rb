@@ -1,7 +1,10 @@
 module Api
   module V1
     class StacksController < ApplicationController
+      include ActionController::HttpAuthentication::Token
       FETCH_LIMIT = 25
+
+      before_action :authenticate_user, only: [:create, :destroy]
 
       def index
         stacks = Stack.limit(limit).offset(params[:offset])
@@ -25,6 +28,15 @@ module Api
       end
 
       private
+
+      def authenticate_user
+        # Authorization: Bearer <token>
+        token, _options = token_and_options(request)        
+        user_id = AuthenticationTokenService.decode(token)
+        User.find(user_id)
+      rescue ActiveRecord::RecordNotFound
+        render status: :unauthorized
+      end
 
       def limit
         [

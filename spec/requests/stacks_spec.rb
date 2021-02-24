@@ -35,7 +35,9 @@ describe 'Stack API', type: :request do
   describe 'POST /stacks' do
     it 'creates a new stack' do
       expect {
-          post '/api/v1/stacks', params: { stack: { title: 'Learn Lavarel', tags: 'Code Lavarel', links: [] } }        
+          post '/api/v1/stacks', 
+          params: { stack: { title: 'Learn Lavarel', tags: 'Code Lavarel', links: [] } }, 
+          headers: { "Authorization" => "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMSJ9.M1vu6qDej7HzuSxcfbE6KAMekNUXB3EWtxwS0pg4UGg" }        
       }.to change { Stack.count }.from(0).to(1)
       expect(response).to have_http_status(:created)     
     end
