@@ -1,10 +1,12 @@
 require 'rails_helper'
 
 describe 'Stack API', type: :request do
+  let!(:user) { FactoryBot.create(:user, username: 'user', password: 'pass1234') }  
   describe 'GET /stacks' do
-    before do
-      FactoryBot.create(:stack, title: 'Learn C++', tags: 'Code C++')
-      FactoryBot.create(:stack, title: 'Learn Ruby', tags: 'Code Ruby')
+    before do      
+      p user.id
+      FactoryBot.create(:stack, title: 'Learn C++', tags: 'Code C++', user_id: user.id)
+      FactoryBot.create(:stack, title: 'Learn Ruby', tags: 'Code Ruby', user_id: user.id)
     end
 
     it 'returns all stacks' do
@@ -36,7 +38,7 @@ describe 'Stack API', type: :request do
     it 'creates a new stack' do
       expect {
           post '/api/v1/stacks', 
-          params: { stack: { title: 'Learn Lavarel', tags: 'Code Lavarel', links: [] } }, 
+          params: { stack: { title: 'Learn Lavarel', tags: 'Code Lavarel', user_id: user.id } }, 
           headers: { "Authorization" => "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMSJ9.M1vu6qDej7HzuSxcfbE6KAMekNUXB3EWtxwS0pg4UGg" }        
       }.to change { Stack.count }.from(0).to(1)
       expect(response).to have_http_status(:created)     
@@ -44,7 +46,7 @@ describe 'Stack API', type: :request do
   end
 
   describe 'DELETE /stacks' do
-    let!(:stack) { FactoryBot.create(:stack, title: 'Learn C++', tags: 'Code C++') }
+    let!(:stack) { FactoryBot.create(:stack, title: 'Learn C++', tags: 'Code C++', user_id: user.id) }
 
     it 'deletes a stack' do
       expect {

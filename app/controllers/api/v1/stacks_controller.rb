@@ -12,8 +12,7 @@ module Api
       end 
 
       def create
-        stack = Stack.new(stack_params)
-
+        stack = Stack.new(stack_params)        
         if stack.save
           render json: StackRepresenter.new(stack).as_json, status: :created
         else
@@ -46,7 +45,7 @@ module Api
       end
 
       def stack_params
-        params.require(:stack).permit(:title, :tags)
+        params.require(:stack).permit(:title, :tags, :user_id)
       end
     end
   end
