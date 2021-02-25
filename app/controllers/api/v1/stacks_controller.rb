@@ -11,8 +11,10 @@ module Api
         render json: StacksRepresenter.new(stacks).as_json
       end 
 
-      def create
+      def create                
         stack = Stack.new(stack_params)        
+        stack.user_id = get_user_id
+
         if stack.save
           render json: StackRepresenter.new(stack).as_json, status: :created
         else
@@ -28,11 +30,8 @@ module Api
 
       private
 
-      def authenticate_user
-        # Authorization: Bearer <token>
-        token, _options = token_and_options(request)        
-        user_id = AuthenticationTokenService.decode(token)
-        User.find(user_id)
+      def authenticate_user        
+        User.find(get_user_id)
       rescue ActiveRecord::RecordNotFound
         render status: :unauthorized
       end
@@ -45,7 +44,13 @@ module Api
       end
 
       def stack_params
-        params.require(:stack).permit(:title, :tags, :user_id)
+        params.require(:stack).permit(:title, :tags)
+      end
+
+      def get_user_id
+        # Authorization: Bearer <token>
+        token, _options = token_and_options(request)        
+        AuthenticationTokenService.decode(token)        
       end
     end
   end

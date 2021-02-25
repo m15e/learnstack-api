@@ -2,7 +2,6 @@ require 'rails_helper'
 
 describe 'user API', type: :request do
   
-
   describe 'POST /users' do
     it 'creates a new user' do
       expect {

@@ -8,7 +8,8 @@ module Api
         user = User.new(user_params)
 
         if user.save
-          render json: { status: 'SUCCESS', message: 'User created', data: user.id }, status: :created
+          token = AuthenticationTokenService.call(user.id)
+          render json: { status: 'SUCCESS', message: 'User created', data: token }, status: :created
         else
           render json: {status: 'ERROR', message: 'User creation failed :(', data: user.errors}, status: :unprocessable_entity
         end
