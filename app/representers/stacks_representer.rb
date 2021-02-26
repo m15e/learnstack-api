@@ -8,6 +8,7 @@ class StacksRepresenter
       {
         id: stack.id,
         title: stack.title,
+        tags: stack.tags,
         links: stack.links
       }
     end

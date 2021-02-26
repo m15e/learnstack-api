@@ -11,6 +11,11 @@ module Api
         render json: StacksRepresenter.new(stacks).as_json
       end 
 
+      def show
+        stack = Stack.find(params[:id])
+        render json: {status: 'SUCCESS', message: 'Loaded Stack', data: stack}, status: :ok
+      end
+
       def create                
         stack = Stack.new(stack_params)        
         stack.user_id = get_user_id
