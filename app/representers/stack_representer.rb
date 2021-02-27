@@ -1,6 +1,6 @@
 class StackRepresenter
   def initialize(stack)
-    @stack = stack
+    @stack = stack    
   end
 
   def as_json    
@@ -8,11 +8,12 @@ class StackRepresenter
       id: stack.id,
       title: stack.title,
       tags: stack.tags,
-      links: stack.links
+      links: stack.links,      
+      user_id: stack.user_id,
     }    
   end
 
   private
 
-  attr_reader :stack
+  attr_accessor :stack
 end

@@ -12,13 +12,12 @@ module Api
       end 
 
       def show
-        stack = Stack.find(params[:id])
-        render json: {status: 'SUCCESS', message: 'Loaded Stack', data: stack}, status: :ok
+        stack = Stack.find(params[:id])                
+        render json: StackRepresenter.new(stack).as_json
       end
 
       def create                
-        stack = Stack.new(stack_params)        
-        stack.user_id = get_user_id
+        stack = Stack.new(stack_params)                
 
         if stack.save
           render json: StackRepresenter.new(stack).as_json, status: :created
@@ -39,17 +38,17 @@ module Api
         User.find(get_user_id)
       rescue ActiveRecord::RecordNotFound
         render status: :unauthorized
-      end
+      end      
 
       def limit
         [
           params.fetch(:limit, FETCH_LIMIT).to_i, 
           FETCH_LIMIT
         ].min
-      end
+      end      
 
       def stack_params
-        params.require(:stack).permit(:title, :tags)
+        params.require(:stack).permit(:title, :tags, :user_id)
       end
 
       def get_user_id
