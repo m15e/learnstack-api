@@ -30,7 +30,7 @@ module Api
       end
       
       def link_params
-        params.require(:link).permit(:title, :url, :tags, :medium, :stack_id)
+        params.require(:link).permit(:title, :url, :medium, :stack_id)
       end
 
       def get_user_id

@@ -8,8 +8,7 @@ class LinkRepresenter
     {
       id: link.id,
       title: link.title,
-      url: link.url,
-      tags: link.tags,
+      url: link.url,      
       medium: link.medium,
       stack_id: link.stack_id
     }    
