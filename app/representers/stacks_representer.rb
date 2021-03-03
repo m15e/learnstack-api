@@ -9,7 +9,9 @@ class StacksRepresenter
         id: stack.id,
         title: stack.title,
         tags: stack.tags,
-        links: stack.links
+        links: stack.links,
+        upvotes: stack.upvotes,
+        downvotes: stack.downvotes,
       }
     end
   end
