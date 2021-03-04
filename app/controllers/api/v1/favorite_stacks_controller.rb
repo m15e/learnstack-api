@@ -23,7 +23,7 @@ module Api
       end
 
       def destroy
-        favorite = Favorite.find(params[:id]).destroy!
+        favorite = Favorite.where(favorited_id: params[:id]).first.destroy!
 
         head :no_content
       end
