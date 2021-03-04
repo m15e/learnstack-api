@@ -18,8 +18,6 @@ module Api
 
       def create                
         stack = Stack.new(stack_params)          
-        stack.upvotes = 0
-        stack.downvotes = 0
 
         if stack.save
           render json: StackRepresenter.new(stack).as_json, status: :created
