@@ -3,8 +3,9 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :stacks, only: [:index, :show, :create, :destroy]
+      resources :favorite_stacks, only: [:create, :destroy, :index]
       resources :links, only: [:create, :destroy]
-      resources :users, only: [:index, :create, :destroy]
+      resources :users, only: [:index, :create, :destroy]      
       post 'authenticate', to: 'authentication#create'
     end 
   end
