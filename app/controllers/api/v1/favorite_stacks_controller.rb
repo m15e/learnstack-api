@@ -6,8 +6,8 @@ module Api
       before_action :authenticate_user, only: [:create, :destroy]
 
       def index
-        favorites = Favorite.order('created_at DESC');
-        render json: {status: 'SUCCESS', message: 'Loaded articles', data:favorites},status: :ok
+        favorites = params[:user_id] ? Favorite.where(user_id: params[:user_id]) : []
+        render json: FavoritesRepresenter.new(favorites).as_json, status: :ok
       end
 
       def create   

@@ -1,19 +1,15 @@
-class favoriteRepresenter
+class FavoritesRepresenter
   def initialize(favorites)
     @favorites = favorites
   end
 
   def as_json
-    favorites.map do |stack|
-      {
-        id: favorite.id,
-        user: favorite.user_id,
-        favorite_stack: favorite.favorited_id   
-      }
+    favorites.map do |favorite|      
+       favorite.favorited_id         
     end
   end
 
   private
 
-  attr_reader :favorite
+  attr_reader :favorites
 end
