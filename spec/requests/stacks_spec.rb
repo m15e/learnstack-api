@@ -2,6 +2,8 @@ require 'rails_helper'
 
 describe 'Stack API', type: :request do
   let!(:user) { FactoryBot.create(:user, username: 'user', password: 'pass1234') }  
+  let!(:token) { AuthenticationTokenService.call(user.id) }
+
   describe 'GET /stacks' do
     before do      
       p user.id
@@ -13,7 +15,13 @@ describe 'Stack API', type: :request do
 
       get '/api/v1/stacks'
 
-      expect(response).to have_http_status(:success)
+      expect(response).to have_http_status(:success)      
+    end
+
+    it 'returns the correct number of stacks' do
+      
+      get '/api/v1/stacks'
+
       expect(response_body.size).to eq(2)
     end
 
@@ -39,18 +47,19 @@ describe 'Stack API', type: :request do
       expect {
           post '/api/v1/stacks', 
           params: { stack: { title: 'Learn Lavarel', tags: 'Code Lavarel', user_id: user.id } }, 
-          headers: { "Authorization" => "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMSJ9.M1vu6qDej7HzuSxcfbE6KAMekNUXB3EWtxwS0pg4UGg" }        
+          headers: { "Authorization" => "Bearer #{token}" }
       }.to change { Stack.count }.from(0).to(1)
       expect(response).to have_http_status(:created)     
     end
   end
 
   describe 'DELETE /stacks' do
-    let!(:stack) { FactoryBot.create(:stack, title: 'Learn C++', tags: 'Code C++', user_id: user.id) }
+    let!(:stack) { FactoryBot.create(:stack, title: 'Learn C++', tags: 'Code C++', user_id: user.id) }    
 
     it 'deletes a stack' do
       expect {
-        delete "/api/v1/stacks/#{stack.id}"
+        delete "/api/v1/stacks/#{stack.id}",
+        headers: { "Authorization" => "Bearer #{token}" } 
       }.to change { Stack.count }.from(1).to(0)
 
       expect(response).to have_http_status(:no_content)
