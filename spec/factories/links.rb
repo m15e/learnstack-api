@@ -2,6 +2,7 @@ FactoryBot.define do
   factory :link do
     title { "MyString" }
     url { "MyString" }
-    type { "" }
+    medium { "MyString" }
+    stack_id {1}
   end
 end
