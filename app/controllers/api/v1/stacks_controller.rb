@@ -4,20 +4,20 @@ module Api
       include ActionController::HttpAuthentication::Token
       FETCH_LIMIT = 25
 
-      before_action :authenticate_user, only: [:create, :destroy]
+      before_action :authenticate_user, only: %i[create destroy]
 
       def index
         stacks = Stack.limit(limit).offset(params[:offset])
         render json: StacksRepresenter.new(stacks).as_json
-      end 
+      end
 
       def show
-        stack = Stack.find(params[:id])                
+        stack = Stack.find(params[:id])
         render json: StackRepresenter.new(stack).as_json
       end
 
-      def create                
-        stack = Stack.new(stack_params)          
+      def create
+        stack = Stack.new(stack_params)
 
         if stack.save
           render json: StackRepresenter.new(stack).as_json, status: :created
@@ -27,34 +27,34 @@ module Api
       end
 
       def destroy
-        stack = Stack.find(params[:id]).destroy!
+        Stack.find(params[:id]).destroy!
 
-        head :no_content    
+        head :no_content
       end
 
       private
 
-      def authenticate_user        
-        User.find(get_user_id)
+      def authenticate_user
+        User.find(grab_user_id)
       rescue ActiveRecord::RecordNotFound
         render status: :unauthorized
-      end      
+      end
 
       def limit
         [
-          params.fetch(:limit, FETCH_LIMIT).to_i, 
+          params.fetch(:limit, FETCH_LIMIT).to_i,
           FETCH_LIMIT
         ].min
-      end      
+      end
 
       def stack_params
         params.require(:stack).permit(:title, :tags, :user_id)
       end
 
-      def get_user_id
+      def grab_user_id
         # Authorization: Bearer <token>
-        token, _options = token_and_options(request)        
-        AuthenticationTokenService.decode(token)        
+        token, _options = token_and_options(request)
+        AuthenticationTokenService.decode(token)
       end
     end
   end

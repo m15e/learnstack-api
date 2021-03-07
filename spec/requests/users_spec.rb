@@ -1,14 +1,13 @@
 require 'rails_helper'
 
 describe 'user API', type: :request do
-  
   describe 'POST /users' do
     it 'creates a new user' do
-      expect {
-          post '/api/v1/users', 
-          params: { user: { username: 'user', password: 'passwOrd' } }          
-      }.to change { User.count }.from(0).to(1)
-      expect(response).to have_http_status(:created)     
+      expect do
+        post '/api/v1/users',
+             params: { user: { username: 'user', password: 'passwOrd' } }
+      end.to change { User.count }.from(0).to(1)
+      expect(response).to have_http_status(:created)
     end
   end
 

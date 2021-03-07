@@ -3,5 +3,5 @@ class Stack < ApplicationRecord
   validates :tags, presence: true, length: { minimum: 1 }
 
   belongs_to :user
-  has_many :links  
+  has_many :links
 end

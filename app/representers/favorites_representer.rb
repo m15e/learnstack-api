@@ -4,9 +4,7 @@ class FavoritesRepresenter
   end
 
   def as_json
-    favorites.map do |favorite|      
-       favorite.favorited_id         
-    end
+    favorites.map(&:favorited_id)
   end
 
   private
