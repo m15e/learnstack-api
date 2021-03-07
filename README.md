@@ -2,10 +2,6 @@
 
 > LearnStack API built with Ruby on Rails.
 
-## Live Link
-
-To visit the live version of the application visit [this link](https://warm-shelf-14278.herokuapp.com/)
-
 ## Application Features
 
 - Users can sign up/login to an account
