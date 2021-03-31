@@ -12,7 +12,7 @@ module Api
         raise AuthenticationError unless user.authenticate(params.require(:password))
 
         token = AuthenticationTokenService.call(user.id)
-        favorites = Favorite.where(user_id: user.id).map(&:favorited_id)
+        favorites = Favorite.where(user_id: user.id).map(&:stack_id)
 
         render json: { token: token, id: user.id, favorites: favorites }, status: :created
       end
