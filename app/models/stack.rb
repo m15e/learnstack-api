@@ -4,4 +4,5 @@ class Stack < ApplicationRecord
 
   belongs_to :user
   has_many :links
+  has_many :favorites, foreign_key: :stack_id
 end

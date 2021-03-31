@@ -1,6 +1,6 @@
 module Api
   module V1
-    class FavoriteStacksController < ApplicationController
+    class FavoritesController < ApplicationController
       include ActionController::HttpAuthentication::Token
 
       before_action :authenticate_user, only: %i[create destroy]
@@ -11,8 +11,7 @@ module Api
       end
 
       def create
-        favorite = Favorite.new(fave_params)
-        favorite.favorited_type = 'Stack'
+        favorite = Favorite.new(fave_params)        
         favorite.user_id = grab_user_id
 
         if favorite.save

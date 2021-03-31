@@ -1,9 +1,9 @@
 class Favorite < ApplicationRecord
   belongs_to :user
-  belongs_to :favorited, polymorphic: true
+  belongs_to :stack
 
-  validates :user_id, uniqueness: {
-    scope: %i[favorited_id favorited_type],
-    message: 'can only favorite an item once'
-  }
+  # validates :user_id, uniqueness: {
+  #   scope: %i[favorited_id],
+  #   message: 'can only favorite an item once'
+  # }
 end
