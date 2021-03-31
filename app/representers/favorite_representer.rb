@@ -7,7 +7,7 @@ class FavoriteRepresenter
     {
       id: favorite.id,
       user: favorite.user_id,
-      favorite_stack: favorite.favorited_id
+      favorite_stack: favorite.stack_id
     }
   end
 

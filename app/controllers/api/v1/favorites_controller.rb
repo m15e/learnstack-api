@@ -36,7 +36,7 @@ module Api
       end
 
       def fave_params
-        params.require(:favorite).permit(:favorited_id) # favorited_id is stack_id
+        params.require(:favorite).permit(:stack_id) # favorited_id is stack_id
       end
 
       def grab_user_id
