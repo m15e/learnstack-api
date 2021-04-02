@@ -1,7 +1,7 @@
 module Api
   module V1
     class AuthenticationController < ApplicationController
-      class AuthenticationError < StandardError; end
+      class AuthenticationError < ArgumentError; end
 
       rescue_from ActionController::ParameterMissing, with: :parameter_missing
       rescue_from AuthenticationError, with: :handle_unauthenticated
@@ -9,12 +9,12 @@ module Api
       def create
         p params.require(:password).inspect
 
-        raise AuthenticationError unless user.authenticate(params.require(:password))
-
+        raise AuthenticationError unless user and user.authenticate(params.require(:password))
+       
         token = AuthenticationTokenService.call(user.id)
         favorites = Favorite.where(user_id: user.id).map(&:stack_id)
 
-        render json: { token: token, id: user.id, favorites: favorites }, status: :created
+        render json: { token: token, id: user.id, favorites: favorites }, status: :created       
       end
 
       private
@@ -28,7 +28,7 @@ module Api
       end
 
       def handle_unauthenticated
-        head :unauthorized
+        render json: { error: 'boo' }, status: :not_found        
       end
     end
   end
