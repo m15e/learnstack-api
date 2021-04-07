@@ -8,9 +8,9 @@ module Api
 
       def create
         raise AuthenticationError unless user and user.authenticate(params.require(:password))
-       
-        token = AuthenticationTokenService.call(user.id)        
-        render json: { token: token, id: user.id }, status: :created       
+
+        token = AuthenticationTokenService.call(user.id)
+        render json: { token: token, id: user.id }, status: :created
       end
 
       private
@@ -24,7 +24,7 @@ module Api
       end
 
       def handle_unauthenticated
-        render json: { error: 'User not found.' }, status: :not_found        
+        render json: { error: 'User not found.' }, status: :not_found
       end
     end
   end

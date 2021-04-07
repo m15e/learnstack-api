@@ -11,7 +11,7 @@ module Api
       end
 
       def create
-        favorite = Favorite.new(fave_params)        
+        favorite = Favorite.new(fave_params)
         favorite.user_id = grab_user_id
 
         if favorite.save
@@ -36,7 +36,7 @@ module Api
       end
 
       def fave_params
-        params.require(:favorite).permit(:stack_id) # favorited_id is stack_id
+        params.require(:favorite).permit(:stack_id)
       end
 
       def grab_user_id
