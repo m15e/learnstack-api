@@ -7,14 +7,10 @@ module Api
       rescue_from AuthenticationError, with: :handle_unauthenticated
 
       def create
-        p params.require(:password).inspect
-
         raise AuthenticationError unless user and user.authenticate(params.require(:password))
        
-        token = AuthenticationTokenService.call(user.id)
-        favorites = Favorite.where(user_id: user.id).map(&:stack_id)
-
-        render json: { token: token, id: user.id, favorites: favorites }, status: :created       
+        token = AuthenticationTokenService.call(user.id)        
+        render json: { token: token, id: user.id }, status: :created       
       end
 
       private
@@ -28,7 +24,7 @@ module Api
       end
 
       def handle_unauthenticated
-        render json: { error: 'boo' }, status: :not_found        
+        render json: { error: 'User not found.' }, status: :not_found        
       end
     end
   end
