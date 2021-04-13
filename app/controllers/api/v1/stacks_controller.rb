@@ -7,7 +7,6 @@ module Api
       before_action :authenticate_user, only: %i[create destroy]
 
       def index
-        # stacks = Stack.limit(limit).offset(params[:offset]) code for pagination
         stacks = Stack.all
         render json: StacksRepresenter.new(stacks).as_json
       end
@@ -53,7 +52,6 @@ module Api
       end
 
       def grab_user_id
-        # Authorization: Bearer <token>
         token, _options = token_and_options(request)
         AuthenticationTokenService.decode(token)
       end

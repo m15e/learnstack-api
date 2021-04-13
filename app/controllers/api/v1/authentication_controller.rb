@@ -1,16 +1,15 @@
 module Api
   module V1
     class AuthenticationController < ApplicationController
-      class AuthenticationError < ArgumentError; end
-
       rescue_from ActionController::ParameterMissing, with: :parameter_missing
-      rescue_from AuthenticationError, with: :handle_unauthenticated
 
       def create
-        raise AuthenticationError unless user&.authenticate(params.require(:password))
-
-        token = AuthenticationTokenService.call(user.id)
-        render json: { token: token, id: user.id }, status: :created
+        if user&.authenticate(params.require(:password))
+          token = AuthenticationTokenService.call(user.id)
+          render json: { token: token, id: user.id }, status: :created
+        else
+          render json: { error: 'Wrong Credentials.' }, status:	:unauthorized
+        end
       end
 
       private
@@ -21,10 +20,6 @@ module Api
 
       def parameter_missing(error)
         render json: { error: error.message }, status: :unprocessable_entity
-      end
-
-      def handle_unauthenticated
-        render json: { error: 'User not found.' }, status: :not_found
       end
     end
   end
