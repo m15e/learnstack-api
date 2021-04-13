@@ -8,7 +8,7 @@ module Api
           token = AuthenticationTokenService.call(user.id)
           render json: { token: token, id: user.id }, status: :created
         else
-          render json: { error: 'Wrong Credentials.' }, status:	:unauthorized
+          render json: { error: 'Wrong Credentials.' }, status: :unauthorized
         end
       end
 
